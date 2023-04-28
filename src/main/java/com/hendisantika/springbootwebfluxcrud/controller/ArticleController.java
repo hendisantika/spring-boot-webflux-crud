@@ -66,4 +66,10 @@ public class ArticleController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @DeleteMapping("/delete/{id}")
+    public Mono<ResponseEntity<Void>> deleteArticle(@PathVariable Integer articleId) {
+        return articleService.deleteArticle(articleId)
+                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
+                .onErrorResume(error -> Mono.just(new ResponseEntity<Void>(HttpStatus.NOT_FOUND)));
+    }
 }
