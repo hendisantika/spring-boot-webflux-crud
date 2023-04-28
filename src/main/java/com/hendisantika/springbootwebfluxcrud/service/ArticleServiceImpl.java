@@ -1,8 +1,10 @@
 package com.hendisantika.springbootwebfluxcrud.service;
 
+import com.hendisantika.springbootwebfluxcrud.entity.Article;
 import com.hendisantika.springbootwebfluxcrud.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,4 +21,13 @@ import org.springframework.stereotype.Service;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+
+    @Override
+    public Mono<Article> saveArticle(Article article) {
+
+        return articleRepository.save(article);
+
+        //for Mono<String> return type
+        //return Mono.just("saved successfully");
+    }
 }
