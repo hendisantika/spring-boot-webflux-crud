@@ -36,4 +36,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Flux<Article> findAllArticles() {
         return articleRepository.findAll().switchIfEmpty(Flux.empty());
     }
+
+    @Override
+    public Mono<Article> findOneArticle(Integer id) {
+        return articleRepository.findById(id).switchIfEmpty(Mono.empty());
+    }
 }
