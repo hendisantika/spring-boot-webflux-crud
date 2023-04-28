@@ -46,4 +46,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Flux<Article> findByAuthor(String author) {
         return articleRepository.findByAuthor(author);
     }
+
+    @Override
+    public Mono<Void> deleteArticle(Integer id) {
+        return articleRepository.deleteById(id);
+    }
 }
