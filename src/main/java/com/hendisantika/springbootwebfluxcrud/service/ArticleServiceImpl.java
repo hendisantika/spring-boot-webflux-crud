@@ -4,6 +4,7 @@ import com.hendisantika.springbootwebfluxcrud.entity.Article;
 import com.hendisantika.springbootwebfluxcrud.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -29,5 +30,10 @@ public class ArticleServiceImpl implements ArticleService {
 
         //for Mono<String> return type
         //return Mono.just("saved successfully");
+    }
+
+    @Override
+    public Flux<Article> findAllArticles() {
+        return articleRepository.findAll().switchIfEmpty(Flux.empty());
     }
 }
