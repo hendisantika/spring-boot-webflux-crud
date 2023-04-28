@@ -43,4 +43,11 @@ public class ArticleController {
                 .map(article -> ResponseEntity.ok(article))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/{author}")
+    public Flux<ResponseEntity<Article>> getArticleByAuthor(@PathVariable String author) {
+        return articleService.findByAuthor(author)
+                .map(article -> ResponseEntity.ok(article))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
 }
