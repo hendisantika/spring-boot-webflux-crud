@@ -50,4 +50,20 @@ public class ArticleController {
                 .map(article -> ResponseEntity.ok(article))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
+
+    @PutMapping("/update/{id}")
+    public Mono<ResponseEntity<Article>> updateArticle(@PathVariable Integer articleId,
+                                                       @RequestBody Article article) {
+        return articleService.findOneArticle(articleId)
+                .flatMap(existingArticle -> {
+                    existingArticle.setTitle(article.getTitle());
+                    existingArticle.setContent(article.getContent());
+                    existingArticle.setAuthor(article.getAuthor());
+                    existingArticle.setPublishedAt(article.getPublishedAt());
+                    return articleService.saveArticle(existingArticle);
+                })
+                .map(updatedArticle -> new ResponseEntity<>(updatedArticle, HttpStatus.OK))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }
