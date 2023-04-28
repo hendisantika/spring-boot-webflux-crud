@@ -36,4 +36,11 @@ public class ArticleController {
         return articleService.saveArticle(article)
                 .map(savedArticle -> new ResponseEntity<>(savedArticle, HttpStatus.CREATED));
     }
+
+    @GetMapping("/{id}")
+    public Mono<ResponseEntity<Article>> getArticleById(@PathVariable Integer articleId) {
+        return articleService.findOneArticle(articleId)
+                .map(article -> ResponseEntity.ok(article))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
 }
