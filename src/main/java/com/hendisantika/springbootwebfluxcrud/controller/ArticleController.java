@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : spring-boot-webflux-crud
@@ -38,7 +40,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<Article>> getArticleById(@PathVariable Integer articleId) {
+    public Mono<ResponseEntity<Article>> getArticleById(@PathVariable UUID articleId) {
         return articleService.findOneArticle(articleId)
                 .map(article -> ResponseEntity.ok(article))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -52,7 +54,7 @@ public class ArticleController {
     }
 
     @PutMapping("/update/{id}")
-    public Mono<ResponseEntity<Article>> updateArticle(@PathVariable Integer articleId,
+    public Mono<ResponseEntity<Article>> updateArticle(@PathVariable UUID articleId,
                                                        @RequestBody Article article) {
         return articleService.findOneArticle(articleId)
                 .flatMap(existingArticle -> {
@@ -67,7 +69,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Mono<ResponseEntity<Void>> deleteArticle(@PathVariable Integer articleId) {
+    public Mono<ResponseEntity<Void>> deleteArticle(@PathVariable UUID articleId) {
         return articleService.deleteArticle(articleId)
                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 .onErrorResume(error -> Mono.just(new ResponseEntity<Void>(HttpStatus.NOT_FOUND)));

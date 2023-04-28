@@ -4,6 +4,8 @@ import com.hendisantika.springbootwebfluxcrud.entity.Article;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : spring-boot-webflux-crud
@@ -20,9 +22,9 @@ public interface ArticleService {
 
     Flux<Article> findAllArticles();
 
-    Mono<Article> findOneArticle(Integer id);
+    Mono<Article> findOneArticle(UUID id);
 
     Flux<Article> findByAuthor(String author);
 
-    Mono<Void> deleteArticle(Integer id);
+    Mono<Void> deleteArticle(UUID id);
 }

@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
+import java.util.UUID;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : spring-boot-webflux-crud
@@ -17,7 +19,7 @@ import reactor.core.publisher.Flux;
  * To change this template use File | Settings | File Templates.
  */
 @Repository
-public interface ArticleRepository extends ReactiveMongoRepository<Article, Integer> {
+public interface ArticleRepository extends ReactiveMongoRepository<Article, UUID> {
 
     @Query("{'author': ?0}")
     Flux<Article> findByAuthor(String author);

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : spring-boot-webflux-crud
@@ -38,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Mono<Article> findOneArticle(Integer id) {
+    public Mono<Article> findOneArticle(UUID id) {
         return articleRepository.findById(id).switchIfEmpty(Mono.empty());
     }
 
@@ -48,7 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Mono<Void> deleteArticle(Integer id) {
+    public Mono<Void> deleteArticle(UUID id) {
         return articleRepository.deleteById(id);
     }
 }
