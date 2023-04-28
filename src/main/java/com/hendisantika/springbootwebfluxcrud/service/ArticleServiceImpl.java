@@ -41,4 +41,9 @@ public class ArticleServiceImpl implements ArticleService {
     public Mono<Article> findOneArticle(Integer id) {
         return articleRepository.findById(id).switchIfEmpty(Mono.empty());
     }
+
+    @Override
+    public Flux<Article> findByAuthor(String author) {
+        return articleRepository.findByAuthor(author);
+    }
 }
