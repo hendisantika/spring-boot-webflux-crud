@@ -5,7 +5,14 @@ import com.hendisantika.springbootwebfluxcrud.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -35,26 +42,27 @@ public class ArticleController {
 
     @PostMapping("/save")
     public Mono<ResponseEntity<Article>> createArticle(@RequestBody Article article) {
+        if (article.getId() == null) {
+            article.setId(UUID.randomUUID());
+        }
         return articleService.saveArticle(article)
                 .map(savedArticle -> new ResponseEntity<>(savedArticle, HttpStatus.CREATED));
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<Article>> getArticleById(@PathVariable UUID articleId) {
+    public Mono<ResponseEntity<Article>> getArticleById(@PathVariable("id") UUID articleId) {
         return articleService.findOneArticle(articleId)
                 .map(article -> ResponseEntity.ok(article))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{author}")
-    public Flux<ResponseEntity<Article>> getArticleByAuthor(@PathVariable String author) {
-        return articleService.findByAuthor(author)
-                .map(article -> ResponseEntity.ok(article))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+    @GetMapping("/author/{author}")
+    public Flux<Article> getArticleByAuthor(@PathVariable("author") String author) {
+        return articleService.findByAuthor(author);
     }
 
     @PutMapping("/update/{id}")
-    public Mono<ResponseEntity<Article>> updateArticle(@PathVariable UUID articleId,
+    public Mono<ResponseEntity<Article>> updateArticle(@PathVariable("id") UUID articleId,
                                                        @RequestBody Article article) {
         return articleService.findOneArticle(articleId)
                 .flatMap(existingArticle -> {
@@ -69,7 +77,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Mono<ResponseEntity<Void>> deleteArticle(@PathVariable UUID articleId) {
+    public Mono<ResponseEntity<Void>> deleteArticle(@PathVariable("id") UUID articleId) {
         return articleService.deleteArticle(articleId)
                 .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
                 .onErrorResume(error -> Mono.just(new ResponseEntity<Void>(HttpStatus.NOT_FOUND)));
