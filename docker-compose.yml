@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-reactive
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: reactivedb
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - spring-network
+
+networks:
+  spring-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
